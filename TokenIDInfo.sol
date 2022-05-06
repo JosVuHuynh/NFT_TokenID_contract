@@ -13,7 +13,8 @@ contract TokenIDInfo {
 
     TokenIDInfo[] public tokenIDInfos;
 
-    function findAllTokenID(address ownerAddress, address[] memory tokens) public  {
+    function findAllTokenIDs(address ownerAddress, address[] memory tokens) public view returns(TokenIDInfo[] memory) {
+        TokenIDInfo[] memory tokenInfos = new TokenIDInfo[](tokens.length);
         for (uint256 i = 0; i < tokens.length; i++){
             ERC721Enumerable token = ERC721Enumerable(tokens[i]);
 
@@ -29,14 +30,12 @@ contract TokenIDInfo {
                 tokenIDs[j] = token.tokenOfOwnerByIndex(ownerAddress, j);
             }
 
-            tokenIDInfos.push(TokenIDInfo(tokens[i],tokenIDs));
+            tokenInfos[i] = TokenIDInfo(tokens[i],tokenIDs);
         }
 
-    }
-    
+        return tokenInfos;
 
-    function getTokenIDInfo() public view returns(TokenIDInfo[] memory) {
-        return tokenIDInfos;
     }
+
     
 }
